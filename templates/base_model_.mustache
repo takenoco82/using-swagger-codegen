@@ -48,6 +48,11 @@ class Model(object):
     def is_not_digit(cls, value) -> bool:
         return not re.match('^\d+$', value)
 
+    @classmethod
+    def is_not_in_code(cls, code_type, value) -> bool:
+        # FIXME: code_typeに対応するリストを取得する
+        return value not in [1, 2]
+
     def to_dict(self):
         """Returns the model properties as a dict
 

@@ -222,6 +222,14 @@ class {{classname}}(Model):
                 "message": "Invalid value for `{{name}}`, must not be only digit"  # noqa: E501
             })
 {{/vendorExtensions.x-digit}}
+{{#vendorExtensions.x-code-type}}
+        if self._{{name}} is not None and self.is_not_in_code("{{vendorExtensions.x-code-type}}", self._{{name}}):
+            errors.append({
+                "code": "codeType",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must be one of code type `{}`".format("{{vendorExtensions.x-code-type}}")  # noqa: E501
+            })
+{{/vendorExtensions.x-code-type}}
 {{/isEnum}}
         {{/vars}}
         return errors{{#vars}}{{#-first}}

@@ -156,6 +156,7 @@ definitions:
       user_status:
         type: "integer"
         format: "int32"
+        x-code-type: "userStatus"
         description: "User Status"
       height:
         type: "number"
