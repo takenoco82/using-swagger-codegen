@@ -47,6 +47,8 @@ def _deserialize_primitive(data, klass):
         value = six.u(data)
     except TypeError:
         value = data
+    except ValueError:
+        value = data
     return value
 
 
@@ -84,9 +86,8 @@ def deserialize_datetime(string):
     :rtype: datetime
     """
     try:
-        from dateutil.parser import parse
-        return parse(string)
-    except ImportError:
+        return datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
         return string
 
 

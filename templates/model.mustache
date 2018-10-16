@@ -60,7 +60,163 @@ class {{classname}}(Model):
         :return: The {{name}} of this {{classname}}.  # noqa: E501
         :rtype: {{classname}}
         """
-        return util.deserialize_model(dikt, cls){{#vars}}{{#-first}}
+        return util.deserialize_model(dikt, cls)
+
+    def validate(self):
+        errors = []
+        {{#vars}}
+{{#isEnum}}
+        allowed_values = [{{#allowableValues}}{{#values}}"{{{this}}}"{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]  # noqa: E501
+{{#isContainer}}
+{{#isListContainer}}
+        if not set(self._{{{name}}}).issubset(set(allowed_values)):
+            errors.append({
+                "code": "isListContainer",
+                "field": "{{name}}",
+                "message": "Invalid values for `{{{name}}}` [{0}], must be a subset of [{1}]".format(  # noqa: E501
+                    ", ".join(map(str, set({{{name}}}) - set(allowed_values))),  # noqa: E501
+                    ", ".join(map(str, allowed_values)))
+            })
+{{/isListContainer}}
+{{#isMapContainer}}
+        if not set(self._{{{name}}}.keys()).issubset(set(allowed_values)):
+            errors.append({
+                "code": "isMapContainer",
+                "field": "{{name}}",
+                "message": "Invalid keys in `{{{name}}}` [{0}], must be a subset of [{1}]".format(  # noqa: E501
+                    ", ".join(map(str, set(self._{{{name}}}.keys()) - set(allowed_values))),  # noqa: E501
+                    ", ".join(map(str, allowed_values)))
+            })
+{{/isMapContainer}}
+{{/isContainer}}
+{{^isContainer}}
+        if self._{{{name}}} not in allowed_values:
+            errors.append({
+                "code": "isContainer",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{{name}}}` ({0}), must be one of {1}".format(
+                    self._{{{name}}}, allowed_values)  # noqa: E501
+            })
+{{/isContainer}}
+{{/isEnum}}
+{{^isEnum}}
+{{#required}}
+        if self._{{name}} is None:
+            errors.append({
+                "code": "required",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must not be `None`"  # noqa: E501
+            })
+{{/required}}
+{{#isInteger}}
+        if self._{{name}} is not None and self.is_not_int(self._{{name}}):
+            errors.append({
+                "code": "type",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, type must be `integer`"  # noqa: E501
+            })
+{{/isInteger}}
+{{#isLong}}
+        if self._{{name}} is not None and self.is_not_int(self._{{name}}):
+            errors.append({
+                "code": "type",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, type must be `integer`"  # noqa: E501
+            })
+{{/isLong}}
+{{#isFloat}}
+        if self._{{name}} is not None and self.is_not_float(self._{{name}}):
+            errors.append({
+                "code": "type",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, type must be `float`"  # noqa: E501
+            })
+{{/isFloat}}
+{{#isDouble}}
+        if self._{{name}} is not None and self.is_not_float(self._{{name}}):
+            errors.append({
+                "code": "type",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, type must be `float`"  # noqa: E501
+            })
+{{/isDouble}}
+{{#isBoolean}}
+        if self._{{name}} is not None and self.is_not_bool(self._{{name}}):
+            errors.append({
+                "code": "type",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, type must be `boolean`"  # noqa: E501
+            })
+{{/isBoolean}}
+{{#isDateTime}}
+        if self._{{name}} is not None and self.is_not_datetime(self._{{name}}):
+            errors.append({
+                "code": "type",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, type must be `datetime`"  # noqa: E501
+            })
+{{/isDateTime}}
+{{#hasValidation}}
+{{#maxLength}}
+        if self._{{name}} is not None and len(self._{{name}}) > {{maxLength}}:
+            errors.append({
+                "code": "maxLength",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, length must be less than or equal to `{{maxLength}}`"  # noqa: E501
+            })
+{{/maxLength}}
+{{#minLength}}
+        if self._{{name}} is not None and len(self._{{name}}) < {{minLength}}:
+            errors.append({
+                "code": "minLength",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, length must be greater than or equal to `{{minLength}}`"  # noqa: E501
+            })
+{{/minLength}}
+{{#maximum}}
+        if self._{{name}} is not None and self._{{name}} >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}}:  # noqa: E501
+            errors.append({
+                "code": "maximum",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must be a value less than {{^exclusiveMaximum}}or equal to {{/exclusiveMaximum}}`{{maximum}}`"  # noqa: E501
+            })
+{{/maximum}}
+{{#minimum}}
+        if self._{{name}} is not None and self._{{name}} <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}}:  # noqa: E501
+            errors.append({
+                "code": "minimum",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must be a value greater than {{^exclusiveMinimum}}or equal to {{/exclusiveMinimum}}`{{minimum}}`"  # noqa: E501
+            })
+{{/minimum}}
+{{#pattern}}
+        if self._{{name}} is not None and not re.search('{{{vendorExtensions.x-regex}}}', self._{{name}}{{#vendorExtensions.x-modifiers}}{{#-first}}, flags={{/-first}}re.{{.}}{{^-last}} | {{/-last}}{{/vendorExtensions.x-modifiers}}):  # noqa: E501
+            errors.append({
+                "code": "pattern",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must be a follow pattern or equal to `{{{pattern}}}`"  # noqa: E501
+            })
+{{/pattern}}
+{{#maxItems}}
+        if self._{{name}} is not None and len(self._{{name}}) > {{maxItems}}:
+            errors.append({
+                "code": "maxItems",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, number of items must be less than or equal to `{{maxItems}}`"  # noqa: E501
+            })
+{{/maxItems}}
+{{#minItems}}
+        if self._{{name}} is not None and len(self._{{name}}) < {{minItems}}:
+            errors.append({
+                "code": "minItems",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, number of items must be greater than or equal to `{{minItems}}`"  # noqa: E501
+            })
+{{/minItems}}
+{{/hasValidation}}
+{{/isEnum}}
+        {{/vars}}
+        return errors{{#vars}}{{#-first}}
 
 {{/-first}}
     @property
@@ -74,6 +230,30 @@ class {{classname}}(Model):
         :return: The {{name}} of this {{classname}}.
         :rtype: {{datatype}}
         """
+{{#isInteger}}
+        if self.is_not_int(self._{{name}}):
+            return None
+{{/isInteger}}
+{{#isLong}}
+        if self.is_not_int(self._{{name}}):
+            return None
+{{/isLong}}
+{{#isFloat}}
+        if self.is_not_float(self._{{name}}):
+            return None
+{{/isFloat}}
+{{#isDouble}}
+        if self.is_not_float(self._{{name}}):
+            return None
+{{/isDouble}}
+{{#isBoolean}}
+        if self.is_not_bool(self._{{name}}):
+            return None
+{{/isBoolean}}
+{{#isDateTime}}
+        if self.is_not_datetime(self._{{name}}):
+            return None
+{{/isDateTime}}
         return self._{{name}}
 
     @{{name}}.setter
@@ -87,71 +267,6 @@ class {{classname}}(Model):
         :param {{name}}: The {{name}} of this {{classname}}.
         :type {{name}}: {{datatype}}
         """
-{{#isEnum}}
-        allowed_values = [{{#allowableValues}}{{#values}}"{{{this}}}"{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]  # noqa: E501
-{{#isContainer}}
-{{#isListContainer}}
-        if not set({{{name}}}).issubset(set(allowed_values)):
-            raise ValueError(
-                "Invalid values for `{{{name}}}` [{0}], must be a subset of [{1}]"  # noqa: E501
-                .format(", ".join(map(str, set({{{name}}}) - set(allowed_values))),  # noqa: E501
-                        ", ".join(map(str, allowed_values)))
-            )
-{{/isListContainer}}
-{{#isMapContainer}}
-        if not set({{{name}}}.keys()).issubset(set(allowed_values)):
-            raise ValueError(
-                "Invalid keys in `{{{name}}}` [{0}], must be a subset of [{1}]"  # noqa: E501
-                .format(", ".join(map(str, set({{{name}}}.keys()) - set(allowed_values))),  # noqa: E501
-                        ", ".join(map(str, allowed_values)))
-            )
-{{/isMapContainer}}
-{{/isContainer}}
-{{^isContainer}}
-        if {{{name}}} not in allowed_values:
-            raise ValueError(
-                "Invalid value for `{{{name}}}` ({0}), must be one of {1}"
-                .format({{{name}}}, allowed_values)
-            )
-{{/isContainer}}
-{{/isEnum}}
-{{^isEnum}}
-{{#required}}
-        if {{name}} is None:
-            raise ValueError("Invalid value for `{{name}}`, must not be `None`")  # noqa: E501
-{{/required}}
-{{#hasValidation}}
-{{#maxLength}}
-        if {{name}} is not None and len({{name}}) > {{maxLength}}:
-            raise ValueError("Invalid value for `{{name}}`, length must be less than or equal to `{{maxLength}}`")  # noqa: E501
-{{/maxLength}}
-{{#minLength}}
-        if {{name}} is not None and len({{name}}) < {{minLength}}:
-            raise ValueError("Invalid value for `{{name}}`, length must be greater than or equal to `{{minLength}}`")  # noqa: E501
-{{/minLength}}
-{{#maximum}}
-        if {{name}} is not None and {{name}} >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}}:  # noqa: E501
-            raise ValueError("Invalid value for `{{name}}`, must be a value less than {{^exclusiveMaximum}}or equal to {{/exclusiveMaximum}}`{{maximum}}`")  # noqa: E501
-{{/maximum}}
-{{#minimum}}
-        if {{name}} is not None and {{name}} <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}}:  # noqa: E501
-            raise ValueError("Invalid value for `{{name}}`, must be a value greater than {{^exclusiveMinimum}}or equal to {{/exclusiveMinimum}}`{{minimum}}`")  # noqa: E501
-{{/minimum}}
-{{#pattern}}
-        if {{name}} is not None and not re.search('{{{vendorExtensions.x-regex}}}', {{name}}{{#vendorExtensions.x-modifiers}}{{#-first}}, flags={{/-first}}re.{{.}}{{^-last}} | {{/-last}}{{/vendorExtensions.x-modifiers}}):  # noqa: E501
-            raise ValueError("Invalid value for `{{name}}`, must be a follow pattern or equal to `{{{pattern}}}`")  # noqa: E501
-{{/pattern}}
-{{#maxItems}}
-        if {{name}} is not None and len({{name}}) > {{maxItems}}:
-            raise ValueError("Invalid value for `{{name}}`, number of items must be less than or equal to `{{maxItems}}`")  # noqa: E501
-{{/maxItems}}
-{{#minItems}}
-        if {{name}} is not None and len({{name}}) < {{minItems}}:
-            raise ValueError("Invalid value for `{{name}}`, number of items must be greater than or equal to `{{minItems}}`")  # noqa: E501
-{{/minItems}}
-{{/hasValidation}}
-{{/isEnum}}
-
         self._{{name}} = {{name}}{{^-last}}
 
 {{/-last}}
