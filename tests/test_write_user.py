@@ -268,6 +268,26 @@ class TestClassName(unittest.TestCase):
                     "field": "born_on",
                     "message": "Invalid value for `born_on`, type must be `datetime`"
                 }
+            ]),
+        param(
+            "x-digit",
+            input={
+                "username": "username1",
+                "first_name": "first_name1",
+                "last_name": "last_name1",
+                "email": "hoge@example.com",
+                "password": "password1",
+                "phone": "09012a45678",
+                "user_status": 1,
+                "height": 173.5,
+                "born_on": "2001-10-15T12:34:56Z"
+            },
+            expected=[
+                {
+                    "code": "digit",
+                    "field": "phone",
+                    "message": "Invalid value for `phone`, must not be only digit"
+                }
             ])
     ])
     def test_validate(self, _, input, expected):
