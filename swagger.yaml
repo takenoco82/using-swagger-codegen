@@ -152,6 +152,7 @@ definitions:
         maxLength: 20
       phone:
         type: "string"
+        x-digit: true
       user_status:
         type: "integer"
         format: "int32"

@@ -1,5 +1,6 @@
 import pprint
 
+import re
 import six
 {{^supportPython2}}
 import typing
@@ -42,6 +43,10 @@ class Model(object):
     @classmethod
     def is_not_datetime(cls, value) -> bool:
         return type(value) != datetime
+
+    @classmethod
+    def is_not_digit(cls, value) -> bool:
+        return not re.match('^\d+$', value)
 
     def to_dict(self):
         """Returns the model properties as a dict

@@ -214,6 +214,14 @@ class {{classname}}(Model):
             })
 {{/minItems}}
 {{/hasValidation}}
+{{#vendorExtensions.x-digit}}
+        if self._{{name}} is not None and self.is_not_digit(self._{{name}}):
+            errors.append({
+                "code": "digit",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must not be only digit"  # noqa: E501
+            })
+{{/vendorExtensions.x-digit}}
 {{/isEnum}}
         {{/vars}}
         return errors{{#vars}}{{#-first}}
