@@ -7,26 +7,26 @@ info:
 host: "localhost:8080"
 basePath: "/v1"
 tags:
-- name: "users"
+  - name: "users"
 schemes:
-- "http"
+  - "http"
 paths:
   /users:
     post:
       tags:
-      - "users"
+        - "users"
       summary: "Create a new user."
       description: ""
       operationId: "createUser"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/WriteUser"
+        - in: "body"
+          name: "body"
+          description: "Created user object"
+          required: true
+          schema:
+            $ref: "#/definitions/WriteUser"
       responses:
         201:
           description: "Create"
@@ -38,21 +38,21 @@ paths:
           $ref: "#/responses/NotFound"
     get:
       tags:
-      - "users"
+        - "users"
       summary: "Lists users."
       description: ""
       operationId: "getUsers"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "query"
-        name: "sort"
-        required: false
-        type: "string"
-        enum:
-        - "user_id"
-        - "username"
-        - "user_status"
+        - in: "query"
+          name: "sort"
+          required: false
+          type: "string"
+          enum:
+            - "user_id"
+            - "username"
+            - "user_status"
       responses:
         200:
           description: "OK"
@@ -61,14 +61,14 @@ paths:
   /users/{user_id}:
     get:
       tags:
-      - "users"
+        - "users"
       summary: "Get the user."
       description: ""
       operationId: "getUser"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - $ref: "#/parameters/PathUserId"
+        - $ref: "#/parameters/PathUserId"
       responses:
         200:
           description: "OK"
@@ -78,20 +78,20 @@ paths:
           $ref: "#/responses/NotFound"
     put:
       tags:
-      - "users"
+        - "users"
       summary: "Update the user."
       description: ""
       operationId: "updateUser"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - $ref: "#/parameters/PathUserId"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/WriteUser"
+        - $ref: "#/parameters/PathUserId"
+        - in: "body"
+          name: "body"
+          description: "Updated user object"
+          required: true
+          schema:
+            $ref: "#/definitions/WriteUser"
       responses:
         200:
           description: "OK"
@@ -103,14 +103,14 @@ paths:
           $ref: "#/responses/NotFound"
     delete:
       tags:
-      - "users"
+        - "users"
       summary: "Delete the user."
       description: ""
       operationId: "deleteUser"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - $ref: "#/parameters/PathUserId"
+        - $ref: "#/parameters/PathUserId"
       responses:
         204:
           $ref: "#/responses/NoContent"
