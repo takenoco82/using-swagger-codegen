@@ -146,7 +146,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 1,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[]),
         param(
@@ -160,7 +161,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 1,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
@@ -180,7 +182,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 1,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
@@ -200,7 +203,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 1,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
@@ -220,7 +224,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": "a",
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
@@ -245,7 +250,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 1,
                 "height": "a",
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
@@ -265,7 +271,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 1,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56"
+                "born_on": "2001-10-15T12:34:56",
+                "gender": "male",
             },
             expected=[
                 {
@@ -285,7 +292,8 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012a45678",
                 "user_status": 1,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
@@ -305,13 +313,35 @@ class TestClassName(unittest.TestCase):
                 "phone": "09012345678",
                 "user_status": 0,
                 "height": 173.5,
-                "born_on": "2001-10-15T12:34:56Z"
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "male",
             },
             expected=[
                 {
                     "code": "codeType",
                     "field": "user_status",
                     "message": "Invalid value for `user_status`, must be one of code type `userStatus`"
+                }
+            ]),
+        param(
+            "enum",
+            input={
+                "username": "username1",
+                "first_name": "first_name1",
+                "last_name": "last_name1",
+                "email": "hoge@example.com",
+                "password": "password1",
+                "phone": "09012345678",
+                "user_status": 1,
+                "height": 173.5,
+                "born_on": "2001-10-15T12:34:56Z",
+                "gender": "man",
+            },
+            expected=[
+                {
+                    "code": "isContainer",
+                    "field": "gender",
+                    "message": "Invalid value for `gender` (man), must be one of ['male', 'female']"
                 }
             ])
     ])

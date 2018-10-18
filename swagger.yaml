@@ -41,6 +41,11 @@ definitions:
       born_on:
         type: "string"
         format: "date-time"
+      gender:
+        type: "string"
+        enum:
+          - "male"
+          - "female"
     example:
       username: "username1"
       first_name: "first_name1"
@@ -51,6 +56,7 @@ definitions:
       user_status: 1
       height: 173.5
       born_on: "2001-10-15T12:34:56Z"
+      gender: "male"
     required:
       - username
       - first_name
