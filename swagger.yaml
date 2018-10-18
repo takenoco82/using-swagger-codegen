@@ -10,6 +10,105 @@ tags:
   - name: "users"
 schemes:
   - "http"
+definitions:
+  WriteUser:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        maxLength: 16
+      first_name:
+        type: "string"
+      last_name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+        minLength: 4
+        maxLength: 20
+      phone:
+        type: "string"
+        x-digit: true
+      user_status:
+        type: "integer"
+        format: "int32"
+        x-code-type: "userStatus"
+        description: "User Status"
+      height:
+        type: "number"
+        format: "float"
+      born_on:
+        type: "string"
+        format: "date-time"
+    example:
+      username: "username1"
+      first_name: "first_name1"
+      last_name: "last_name1"
+      email: "sample@example.com"
+      password: "password1"
+      phone: "09012345678"
+      user_status: 1
+      height: 173.5
+      born_on: "2001-10-15T12:34:56Z"
+    required:
+      - username
+      - first_name
+      - last_name
+      - email
+      - password
+  User:
+    type: "object"
+    properties:
+      user_id:
+        type: "integer"
+      username:
+        type: "string"
+      first_name:
+        type: "string"
+      last_name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+      user_status:
+        type: "integer"
+        description: "User Status"
+    example:
+      user_id: 1
+      username: "username1"
+      first_name: "first_name1"
+      last_name: "last_name1"
+      email: "sample@example.com"
+      password: "password1"
+      phone: "09012345678"
+      user_status: 1
+      height: 173.5
+      born_on: "2001-10-15T12:34:56Z"
+  Users:
+    type: "object"
+    properties:
+      users:
+        type: "array"
+        items:
+          $ref: "#/definitions/User"
+  Errors:
+    type: "object"
+    properties:
+      errors:
+        type: "array"
+        items:
+          $ref: "#/definitions/Error"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      field:
+        type: "string"
+      message:
+        type: "string"
 paths:
   /users:
     post:
@@ -133,105 +232,6 @@ responses:
       $ref: "#/definitions/Errors"
   NotFound:
     description: "Not Found"
-definitions:
-  WriteUser:
-    type: "object"
-    properties:
-      username:
-        type: "string"
-        maxLength: 16
-      first_name:
-        type: "string"
-      last_name:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-        minLength: 4
-        maxLength: 20
-      phone:
-        type: "string"
-        x-digit: true
-      user_status:
-        type: "integer"
-        format: "int32"
-        x-code-type: "userStatus"
-        description: "User Status"
-      height:
-        type: "number"
-        format: "float"
-      born_on:
-        type: "string"
-        format: "date-time"
-    example:
-      username: "username1"
-      first_name: "first_name1"
-      last_name: "last_name1"
-      email: "sample@example.com"
-      password: "password1"
-      phone: "09012345678"
-      user_status: 1
-      height: 173.5
-      born_on: "2001-10-15T12:34:56Z"
-    required:
-      - username
-      - first_name
-      - last_name
-      - email
-      - password
-  User:
-    type: "object"
-    properties:
-      user_id:
-        type: "integer"
-      username:
-        type: "string"
-      first_name:
-        type: "string"
-      last_name:
-        type: "string"
-      email:
-        type: "string"
-      phone:
-        type: "string"
-      user_status:
-        type: "integer"
-        description: "User Status"
-    example:
-      user_id: 1
-      username: "username1"
-      first_name: "first_name1"
-      last_name: "last_name1"
-      email: "sample@example.com"
-      password: "password1"
-      phone: "09012345678"
-      user_status: 1
-      height: 173.5
-      born_on: "2001-10-15T12:34:56Z"
-  Users:
-    type: "object"
-    properties:
-      users:
-        type: "array"
-        items:
-          $ref: "#/definitions/User"
-  Errors:
-    type: "object"
-    properties:
-      errors:
-        type: "array"
-        items:
-          $ref: "#/definitions/Error"
-  Error:
-    type: "object"
-    properties:
-      code:
-        type: "string"
-      field:
-        type: "string"
-      message:
-        type: "string"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
