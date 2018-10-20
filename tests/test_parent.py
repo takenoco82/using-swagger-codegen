@@ -200,7 +200,7 @@ class TestClassName(unittest.TestCase):
             expected=[
                 {
                     "code": "required",
-                    "field": "child_field1",
+                    "field": "children[0]child_field1",
                     "message": "Invalid value for `child_field1`, must not be `None`"
                 }
             ]),
@@ -239,7 +239,7 @@ class TestClassName(unittest.TestCase):
             expected=[
                 {
                     "code": "required",
-                    "field": "grandchild_field1",
+                    "field": "children[0]grandchildren[0]grandchild_field1",
                     "message": "Invalid value for `grandchild_field1`, must not be `None`"
                 }
             ]),
@@ -278,12 +278,12 @@ class TestClassName(unittest.TestCase):
             expected=[
                 {
                     "code": "required",
-                    "field": "grandchild_field1",
+                    "field": "children[0]grandchildren[0]grandchild_field1",
                     "message": "Invalid value for `grandchild_field1`, must not be `None`"
                 },
                 {
                     "code": "required",
-                    "field": "child_field1",
+                    "field": "children[1]child_field1",
                     "message": "Invalid value for `child_field1`, must not be `None`"
                 }
             ]),
@@ -325,7 +325,7 @@ class TestClassName(unittest.TestCase):
             expected=[
                 {
                     "code": "required",
-                    "field": "grandchildren",
+                    "field": "children[0]grandchildren",
                     "message": "Invalid value for `grandchildren`, must not be `None`"
                 }
             ]),
