@@ -164,6 +164,32 @@ definitions:
         maxLength: 20
     required:
       - grandchild_field1
+  Employee:
+    type: "object"
+    properties:
+      employee_id:
+        type: "string"
+        minLength: 1
+      employee_name:
+        type: "string"
+        minLength: 1
+      contact:
+        type: "object"
+        $ref: "#/definitions/Contact"
+    required:
+      - employee_id
+      - contact
+  Contact:
+    type: "object"
+    properties:
+      phone:
+        type: "string"
+        minLength: 1
+      address:
+        type: "string"
+        minLength: 1
+    required:
+      - phone
 paths:
   /users:
     post:
