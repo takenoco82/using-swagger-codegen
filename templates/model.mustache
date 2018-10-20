@@ -255,6 +255,22 @@ class {{classname}}(Model):
 {{/vendorExtensions.x-code-type}}
 {{/isEnum}}
         {{/vars}}
+
+        for attr, attr_type in self.swagger_types.items():
+            # List[xxx] の場合
+            if type(List) == type(attr_type):
+                attr_values = getattr(self, attr)
+                if not attr_values:
+                    continue
+                for attr_value in attr_values:  # pylint: disable=E1133
+                    errors.extend(attr_value.validate())
+
+            # Model のサブクラスの場合
+            elif issubclass(attr_type, Model):
+                attr_value = getattr(self, attr)
+                if not attr_value:
+                    continue
+                errors.extend(attr_value.validate())
         return errors{{#vars}}{{#-first}}
 
 {{/-first}}
