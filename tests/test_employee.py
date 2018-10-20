@@ -118,7 +118,7 @@ class TestEmployee(unittest.TestCase):
             expected=[
                 {
                     "code": "required",
-                    "field": "phone",
+                    "field": "contact.phone",
                     "message": "Invalid value for `phone`, must not be `None`"
                 }
             ]),

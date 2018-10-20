@@ -273,7 +273,10 @@ class {{classname}}(Model):
                 attr_value = getattr(self, attr)
                 if not attr_value:
                     continue
-                errors.extend(attr_value.validate())
+                attr_errors = attr_value.validate()
+                for attr_error in attr_errors:
+                    attr_error["field"] = "{parent_attr}.{child_attr}".format(parent_attr=attr, child_attr=attr_error["field"])
+                errors.extend(attr_errors)
         return errors{{#vars}}{{#-first}}
 
 {{/-first}}
