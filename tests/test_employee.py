@@ -59,6 +59,76 @@ class TestEmployee(unittest.TestCase):
 
         self.assertEqual(employee, expected)
 
+    @parameterized.expand([
+        param(
+            "no error",
+            input={
+                "employee_id": "0001",
+                "employee_name": "employee_name1",
+                "contact": {
+                    "phone": "09012345678",
+                    "address": "address1"
+                }
+            },
+            expected=[]),
+        param(
+            "required employee_name",
+            input={
+                # "employee_id": "0001",
+                "employee_name": "employee_name1",
+                "contact": {
+                    "phone": "09012345678",
+                    "address": "address1"
+                }
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "employee_id",
+                    "message": "Invalid value for `employee_id`, must not be `None`"
+                }
+            ]),
+        param(
+            "required contact",
+            input={
+                "employee_id": "0001",
+                "employee_name": "employee_name1",
+                # "contact": {
+                #     "phone": "09012345678",
+                #     "address": "address1"
+                # }
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "contact",
+                    "message": "Invalid value for `contact`, must not be `None`"
+                }
+            ]),
+        param(
+            "required phone",
+            input={
+                "employee_id": "0001",
+                "employee_name": "employee_name1",
+                "contact": {
+                    # "phone": "09012345678",
+                    "address": "address1"
+                }
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "phone",
+                    "message": "Invalid value for `phone`, must not be `None`"
+                }
+            ]),
+    ])
+    def test_validate(self, _, input, expected):
+        employee = Employee.from_dict(input)
+        errors = employee.validate()
+
+        self.assertEqual(errors, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
