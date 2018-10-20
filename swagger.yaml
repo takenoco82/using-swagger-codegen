@@ -121,6 +121,49 @@ definitions:
       - "user_id"
       - "username"
       - "user_status"
+  Parent:
+    type: "object"
+    properties:
+      parent_field1:
+        type: "string"
+        minLength: 1
+      parent_field2:
+        type: "string"
+        maxLength: 20
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/Child"
+    required:
+      - parent_field1
+      - children
+  Child:
+    type: "object"
+    properties:
+      child_field1:
+        type: "string"
+        minLength: 1
+      child_field2:
+        type: "string"
+        maxLength: 20
+      grandchildren:
+        type: "array"
+        items:
+          $ref: "#/definitions/Grandchild"
+    required:
+      - child_field1
+      - grandchildren
+  Grandchild:
+    type: "object"
+    properties:
+      grandchild_field1:
+        type: "string"
+        minLength: 1
+      grandchild_field2:
+        type: "string"
+        maxLength: 20
+    required:
+      - grandchild_field1
 paths:
   /users:
     post:
