@@ -131,6 +131,215 @@ class TestClassName(unittest.TestCase):
         print("expected={}".format(expected))
         self.assertEqual(parent, expected)
 
+    @parameterized.expand([
+        param(
+            "no error",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": [
+                    {
+                        "child_field1": "child_value11",
+                        "child_field2": "child_value12",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value111",
+                                "grandchild_field2": "grandchild_value112",
+                            },
+                            {
+                                "grandchild_field1": "grandchild_value121",
+                                "grandchild_field2": "grandchild_value122",
+                            }
+                        ]
+                    },
+                    {
+                        "child_field1": "child_value21",
+                        "child_field2": "child_value22",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value211",
+                                "grandchild_field2": "grandchild_value212",
+                            }
+                        ]
+                    }
+                ],
+            },
+            expected=[]),
+        param(
+            "required child_field1",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": [
+                    {
+                        # "child_field1": "child_value11",
+                        "child_field2": "child_value12",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value111",
+                                "grandchild_field2": "grandchild_value112",
+                            },
+                            {
+                                "grandchild_field1": "grandchild_value121",
+                                "grandchild_field2": "grandchild_value122",
+                            }
+                        ]
+                    },
+                    {
+                        "child_field1": "child_value21",
+                        "child_field2": "child_value22",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value211",
+                                "grandchild_field2": "grandchild_value212",
+                            }
+                        ]
+                    }
+                ],
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "child_field1",
+                    "message": "Invalid value for `child_field1`, must not be `None`"
+                }
+            ]),
+        param(
+            "required grandchild_field1",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": [
+                    {
+                        "child_field1": "child_value11",
+                        "child_field2": "child_value12",
+                        "grandchildren": [
+                            {
+                                # "grandchild_field1": "grandchild_value111",
+                                "grandchild_field2": "grandchild_value112",
+                            },
+                            {
+                                "grandchild_field1": "grandchild_value121",
+                                "grandchild_field2": "grandchild_value122",
+                            }
+                        ]
+                    },
+                    {
+                        "child_field1": "child_value21",
+                        "child_field2": "child_value22",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value211",
+                                "grandchild_field2": "grandchild_value212",
+                            }
+                        ]
+                    }
+                ],
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "grandchild_field1",
+                    "message": "Invalid value for `grandchild_field1`, must not be `None`"
+                }
+            ]),
+        param(
+            "required multi",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": [
+                    {
+                        "child_field1": "child_value11",
+                        "child_field2": "child_value12",
+                        "grandchildren": [
+                            {
+                                # "grandchild_field1": "grandchild_value111",
+                                "grandchild_field2": "grandchild_value112",
+                            },
+                            {
+                                "grandchild_field1": "grandchild_value121",
+                                "grandchild_field2": "grandchild_value122",
+                            }
+                        ]
+                    },
+                    {
+                        # "child_field1": "child_value21",
+                        "child_field2": "child_value22",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value211",
+                                "grandchild_field2": "grandchild_value212",
+                            }
+                        ]
+                    }
+                ],
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "grandchild_field1",
+                    "message": "Invalid value for `grandchild_field1`, must not be `None`"
+                },
+                {
+                    "code": "required",
+                    "field": "child_field1",
+                    "message": "Invalid value for `child_field1`, must not be `None`"
+                }
+            ]),
+        param(
+            "required children",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "children",
+                    "message": "Invalid value for `children`, must not be `None`"
+                }
+            ]),
+        param(
+            "required grandchildren",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": [
+                    {
+                        "child_field1": "child_value11",
+                        "child_field2": "child_value12",
+                    },
+                    {
+                        "child_field1": "child_value21",
+                        "child_field2": "child_value22",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value211",
+                                "grandchild_field2": "grandchild_value212",
+                            }
+                        ]
+                    }
+                ],
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "grandchildren",
+                    "message": "Invalid value for `grandchildren`, must not be `None`"
+                }
+            ]),
+    ])
+    def test_validate(self, _, input, expected):
+        parent = Parent.from_dict(input)
+        errors = parent.validate()
+
+        self.assertEqual(len(errors), len(expected))
+        for index, expected_error in enumerate(expected):
+            self.assertEqual(errors[index].get("code"), expected_error["code"])
+            self.assertEqual(errors[index].get("field"), expected_error["field"])
+            self.assertEqual(errors[index].get("message"), expected_error["message"])
+
 
 if __name__ == '__main__':
     unittest.main()
