@@ -4,6 +4,22 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "bash",
+            "type": "shell",
+            "group": "build",
+            "command": "/bin/bash",
+            "args": [
+                "${file}"
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new"
+            },
+            "problemMatcher": [],
+        },
+        {
             "label": "python",
             "type": "shell",
             "group": {
