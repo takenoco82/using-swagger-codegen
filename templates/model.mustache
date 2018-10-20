@@ -265,7 +265,8 @@ class {{classname}}(Model):
                 for i, attr_value in enumerate(attr_values):  # pylint: disable=E1133
                     attr_errors = attr_value.validate()
                     for attr_error in attr_errors:
-                        attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(parent_attr=attr, index=i, child_attr=attr_error["field"])
+                        attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
+                            parent_attr=attr, index=i, child_attr=attr_error["field"])
                     errors.extend(attr_errors)
 
             # Model のサブクラスの場合
@@ -275,7 +276,8 @@ class {{classname}}(Model):
                     continue
                 attr_errors = attr_value.validate()
                 for attr_error in attr_errors:
-                    attr_error["field"] = "{parent_attr}.{child_attr}".format(parent_attr=attr, child_attr=attr_error["field"])
+                    attr_error["field"] = "{parent_attr}.{child_attr}".format(
+                        parent_attr=attr, child_attr=attr_error["field"])
                 errors.extend(attr_errors)
         return errors{{#vars}}{{#-first}}
 
