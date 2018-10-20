@@ -74,20 +74,62 @@ class TestClassName(unittest.TestCase):
                             Grandchild("grandchild_value211", "grandchild_value212")])
                 ]
             )
-        )
+        ),
+        param(
+            "no children",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+            },
+            expected=Parent(
+                "parent_value1",
+                "parent_value2"
+            )
+        ),
+        param(
+            "no grandchildren",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": [
+                    {
+                        "child_field1": "child_value11",
+                        "child_field2": "child_value12",
+                    },
+                    {
+                        "child_field1": "child_value21",
+                        "child_field2": "child_value22",
+                        "grandchildren": [
+                            {
+                                "grandchild_field1": "grandchild_value211",
+                                "grandchild_field2": "grandchild_value212",
+                            }
+                        ]
+                    }
+                ],
+            },
+            expected=Parent(
+                "parent_value1",
+                "parent_value2",
+                [
+                    Child(
+                        "child_value11",
+                        "child_value12"),
+                    Child(
+                        "child_value21",
+                        "child_value22",
+                        [
+                            Grandchild("grandchild_value211", "grandchild_value212")])
+                ]
+            )
+        ),
     ])
     def test_from_dict(self, _, input, expected):
         parent = Parent.from_dict(input)
 
-        self.assertEqual(parent.parent_field1, expected.parent_field1)
-        self.assertEqual(len(parent.children), len(expected.children))
-        for i, expected_child in enumerate(expected.children):
-            child = parent.children[i]
-            self.assertEqual(child.child_field1, expected_child.child_field1)
-            self.assertEqual(len(child.grandchildren), len(expected_child.grandchildren))
-            for i, expected_grandchild in enumerate(expected_child.grandchildren):
-                grandchild = child.grandchildren[i]
-                self.assertEqual(grandchild.grandchild_field1, expected_grandchild.grandchild_field1)
+        print("actual={}".format(parent))
+        print("expected={}".format(expected))
+        self.assertEqual(parent, expected)
 
 
 if __name__ == '__main__':
