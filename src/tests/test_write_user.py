@@ -1,6 +1,6 @@
 import unittest
 # from swagger_server import log
-from app.swagger_codegen.models.write_user import WriteUser
+from swagger_codegen.models.write_user import WriteUser
 from parameterized import parameterized, param
 from datetime import datetime
 

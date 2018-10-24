@@ -1,8 +1,8 @@
 import unittest
 # from swagger_server import log
-from app.swagger_codegen.models.parent import Parent
-from app.swagger_codegen.models.child import Child
-from app.swagger_codegen.models.grandchild import Grandchild
+from swagger_codegen.models.parent import Parent
+from swagger_codegen.models.child import Child
+from swagger_codegen.models.grandchild import Grandchild
 from parameterized import parameterized, param
 
 

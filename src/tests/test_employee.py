@@ -1,6 +1,6 @@
 import unittest
-from app.swagger_codegen.models.employee import Employee
-from app.swagger_codegen.models.contact import Contact
+from swagger_codegen.models.employee import Employee
+from swagger_codegen.models.contact import Contact
 from parameterized import parameterized, param
 from datetime import datetime
 
