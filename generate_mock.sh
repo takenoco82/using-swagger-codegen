@@ -1,12 +1,12 @@
-WORKSPACE_FOLDER=`pwd`
+REPOSITORY_DIR=`pwd`
 # swagger-codegenで生成する際のパッケージ名
 PACKAGE_CODEGEN=swagger_codegen
 # swagger-codegenでいったん出力するディレクトリ
-TMP_DIR=${WORKSPACE_FOLDER}/tmp
+TMP_DIR=${REPOSITORY_DIR}/tmp
 # swagger-codegenで使用するテンプレートを格納するでディレクトリ
-TEMPLATES_DIR=${WORKSPACE_FOLDER}/templates
+TEMPLATES_DIR=${REPOSITORY_DIR}/templates
 # 最終的にswagger-codegenから出力したファイルを格納するディレクトリ
-CODEGEN_DIR=${WORKSPACE_FOLDER}/src/${PACKAGE_CODEGEN}/
+CODEGEN_DIR=${REPOSITORY_DIR}/src/${PACKAGE_CODEGEN}
 
 
 # swagger-codegenから出力したファイルをディレクトリごと削除
