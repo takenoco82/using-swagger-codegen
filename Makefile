@@ -1,5 +1,14 @@
 SERVICE=sandbox
 
+.PHONY: run
+run: stop
+	docker-compose up --build -d --remove-orphans
+
+.PHONY: stop
+stop:
+	docker-compose stop
+	docker-compose rm -f
+
 .PHONY: test
 test: codegen
 	docker-compose run --rm ${SERVICE} \
@@ -10,12 +19,3 @@ test: codegen
 .PHONY: codegen
 codegen: run
 	./tools/generate_models.sh
-
-.PHONY: run
-run: stop
-	docker-compose up --build -d --remove-orphans
-
-.PHONY: stop
-stop:
-	docker-compose stop
-	docker-compose rm -f
