@@ -1,7 +1,11 @@
+SERVICE=sandbox
+
 .PHONY: test
 test: codegen
-	cd ./src && export PYTHONPATH=`pwd` && python -m unittest -b -v
-	cd ./src && export PYTHONPATH=`pwd` && flake8 swagger_codegen --max-line-length=100
+	docker-compose run --rm ${SERVICE} \
+		nosetests -v --nologcapture /usr/src/app/tests
+	docker-compose run --rm ${SERVICE} \
+		flake8 /usr/src/appswagger_codegen --max-line-length=100
 
 .PHONY: codegen
 codegen: run
@@ -9,7 +13,7 @@ codegen: run
 
 .PHONY: run
 run: stop
-	docker-compose up -d --remove-orphans
+	docker-compose up --build -d --remove-orphans
 
 .PHONY: stop
 stop:

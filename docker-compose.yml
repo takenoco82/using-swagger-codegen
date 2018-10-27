@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  sandbox:
+    build: .
+    image: ${IMAGE_API}:${TAG_API}
+    restart: always
+    container_name: sandbox
+    hostname: sandbox
+    networks:
+      - my_networks
+
   swagger-ui:
     image: swaggerapi/swagger-ui:latest
     restart: always
