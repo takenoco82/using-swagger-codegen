@@ -13,7 +13,7 @@ services:
     environment:
       API_URL: http://localhost:8081/swagger.yaml
     networks:
-     - my_networks
+      - my_networks
 
   swagger-editor:
     image: swaggerapi/swagger-editor:latest
@@ -23,7 +23,7 @@ services:
     container_name: swagger-editor
     hostname: swagger-editor
     networks:
-     - my_networks
+      - my_networks
 
 networks:
   my_networks:
