@@ -1,3 +1,5 @@
+#!/bin/bash -eu
+
 REPOSITORY_DIR=`pwd | xargs dirname`
 # swagger-codegenで生成する際のパッケージ名
 PACKAGE_CODEGEN=swagger_codegen
