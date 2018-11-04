@@ -19,3 +19,6 @@ test: codegen
 .PHONY: codegen
 codegen: run
 	./tools/generate_models.sh
+
+clean:
+	docker-compose config --services | xargs docker rm -f
