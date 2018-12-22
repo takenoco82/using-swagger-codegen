@@ -134,6 +134,29 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Child"
+      StringArray:
+        type: "array"
+        items:
+          type: "string"
+      IntegerArray:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+      FloatArray:
+        type: "array"
+        items:
+          type: "number"
+          format: "float"
+      BooleanArray:
+        type: "array"
+        items:
+          type: "boolean"
+      DatetimeArray:
+        type: "array"
+        items:
+          type: "string"
+          format: "date-time"
     required:
       - parent_field1
       - children

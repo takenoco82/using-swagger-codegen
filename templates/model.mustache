@@ -180,7 +180,12 @@ class {{classname}}(Model):
             })
 {{/isDateTime}}
 {{#isContainer}}
-        # TODO List[] のチェック処理を追加
+{{#isPrimitiveType}}
+        # TODO List[str], List[int], List[float], List[bool], List[datetime] のチェック処理を追加
+{{/isPrimitiveType}}
+{{^isPrimitiveType}}
+        # TODO List[object] のチェック処理を追加
+{{/isPrimitiveType}}
 {{/isContainer}}
 {{^isContainer}}
 {{^isPrimitiveType}}

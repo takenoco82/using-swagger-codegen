@@ -17,7 +17,7 @@ class Parent(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, parent_field1: str=None, parent_field2: str=None, children: List[Child]=None):  # noqa: E501
+    def __init__(self, parent_field1: str=None, parent_field2: str=None, children: List[Child]=None, string_array: List[str]=None, integer_array: List[int]=None, float_array: List[float]=None, boolean_array: List[bool]=None, datetime_array: List[datetime]=None):  # noqa: E501
         """Parent - a model defined in Swagger
 
         :param parent_field1: The parent_field1 of this Parent.  # noqa: E501
@@ -26,22 +26,47 @@ class Parent(Model):
         :type parent_field2: str
         :param children: The children of this Parent.  # noqa: E501
         :type children: List[Child]
+        :param string_array: The string_array of this Parent.  # noqa: E501
+        :type string_array: List[str]
+        :param integer_array: The integer_array of this Parent.  # noqa: E501
+        :type integer_array: List[int]
+        :param float_array: The float_array of this Parent.  # noqa: E501
+        :type float_array: List[float]
+        :param boolean_array: The boolean_array of this Parent.  # noqa: E501
+        :type boolean_array: List[bool]
+        :param datetime_array: The datetime_array of this Parent.  # noqa: E501
+        :type datetime_array: List[datetime]
         """
         self.swagger_types = {
             'parent_field1': str,
             'parent_field2': str,
-            'children': List[Child]
+            'children': List[Child],
+            'string_array': List[str],
+            'integer_array': List[int],
+            'float_array': List[float],
+            'boolean_array': List[bool],
+            'datetime_array': List[datetime]
         }
 
         self.attribute_map = {
             'parent_field1': 'parent_field1',
             'parent_field2': 'parent_field2',
-            'children': 'children'
+            'children': 'children',
+            'string_array': 'StringArray',
+            'integer_array': 'IntegerArray',
+            'float_array': 'FloatArray',
+            'boolean_array': 'BooleanArray',
+            'datetime_array': 'DatetimeArray'
         }
 
         self._parent_field1 = parent_field1
         self._parent_field2 = parent_field2
         self._children = children
+        self._string_array = string_array
+        self._integer_array = integer_array
+        self._float_array = float_array
+        self._boolean_array = boolean_array
+        self._datetime_array = datetime_array
 
     @classmethod
     def from_dict(cls, dikt) -> 'Parent':
@@ -80,7 +105,12 @@ class Parent(Model):
                 "field": "children",
                 "message": "Invalid value for `children`, must not be `None`"  # noqa: E501
             })
-        # TODO List[] のチェック処理を追加
+        # TODO List[object] のチェック処理を追加
+        # TODO List[str], List[int], List[float], List[bool], List[datetime] のチェック処理を追加
+        # TODO List[str], List[int], List[float], List[bool], List[datetime] のチェック処理を追加
+        # TODO List[str], List[int], List[float], List[bool], List[datetime] のチェック処理を追加
+        # TODO List[str], List[int], List[float], List[bool], List[datetime] のチェック処理を追加
+        # TODO List[str], List[int], List[float], List[bool], List[datetime] のチェック処理を追加
 
         for attr, attr_type in self.swagger_types.items():
             # List[xxx] の場合
@@ -166,3 +196,103 @@ class Parent(Model):
         :type children: List[Child]
         """
         self._children = children
+
+    @property
+    def string_array(self) -> List[str]:
+        """Gets the string_array of this Parent.
+
+
+        :return: The string_array of this Parent.
+        :rtype: List[str]
+        """
+        return self._string_array
+
+    @string_array.setter
+    def string_array(self, string_array: List[str]):
+        """Sets the string_array of this Parent.
+
+
+        :param string_array: The string_array of this Parent.
+        :type string_array: List[str]
+        """
+        self._string_array = string_array
+
+    @property
+    def integer_array(self) -> List[int]:
+        """Gets the integer_array of this Parent.
+
+
+        :return: The integer_array of this Parent.
+        :rtype: List[int]
+        """
+        return self._integer_array
+
+    @integer_array.setter
+    def integer_array(self, integer_array: List[int]):
+        """Sets the integer_array of this Parent.
+
+
+        :param integer_array: The integer_array of this Parent.
+        :type integer_array: List[int]
+        """
+        self._integer_array = integer_array
+
+    @property
+    def float_array(self) -> List[float]:
+        """Gets the float_array of this Parent.
+
+
+        :return: The float_array of this Parent.
+        :rtype: List[float]
+        """
+        return self._float_array
+
+    @float_array.setter
+    def float_array(self, float_array: List[float]):
+        """Sets the float_array of this Parent.
+
+
+        :param float_array: The float_array of this Parent.
+        :type float_array: List[float]
+        """
+        self._float_array = float_array
+
+    @property
+    def boolean_array(self) -> List[bool]:
+        """Gets the boolean_array of this Parent.
+
+
+        :return: The boolean_array of this Parent.
+        :rtype: List[bool]
+        """
+        return self._boolean_array
+
+    @boolean_array.setter
+    def boolean_array(self, boolean_array: List[bool]):
+        """Sets the boolean_array of this Parent.
+
+
+        :param boolean_array: The boolean_array of this Parent.
+        :type boolean_array: List[bool]
+        """
+        self._boolean_array = boolean_array
+
+    @property
+    def datetime_array(self) -> List[datetime]:
+        """Gets the datetime_array of this Parent.
+
+
+        :return: The datetime_array of this Parent.
+        :rtype: List[datetime]
+        """
+        return self._datetime_array
+
+    @datetime_array.setter
+    def datetime_array(self, datetime_array: List[datetime]):
+        """Sets the datetime_array of this Parent.
+
+
+        :param datetime_array: The datetime_array of this Parent.
+        :type datetime_array: List[datetime]
+        """
+        self._datetime_array = datetime_array
