@@ -329,6 +329,20 @@ class TestClassName(unittest.TestCase):
                     "message": "Invalid value for `grandchildren`, must not be `None`"
                 }
             ]),
+        param(
+            "int_in_list",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": 1,
+            },
+            expected=[
+                {
+                    "code": "required",
+                    "field": "children[0]grandchildren",
+                    "message": "Invalid value for `grandchildren`, must not be `None`"
+                }
+            ]),
     ])
     def test_validate(self, _, input, expected):
         parent = Parent.from_dict(input)
