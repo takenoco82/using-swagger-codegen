@@ -177,29 +177,6 @@ class WriteUser(Model):
                     self._gender, allowed_values)  # noqa: E501
             })
 
-        for attr, attr_type in self.swagger_types.items():
-            # List[xxx] の場合
-            if type(List) == type(attr_type):
-                attr_values = getattr(self, attr)
-                if not attr_values:
-                    continue
-                for i, attr_value in enumerate(attr_values):  # pylint: disable=E1133
-                    attr_errors = attr_value.validate()
-                    for attr_error in attr_errors:
-                        attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
-                            parent_attr=attr, index=i, child_attr=attr_error["field"])
-                    errors.extend(attr_errors)
-
-            # Model のサブクラスの場合
-            elif issubclass(attr_type, Model):
-                attr_value = getattr(self, attr)
-                if not attr_value:
-                    continue
-                attr_errors = attr_value.validate()
-                for attr_error in attr_errors:
-                    attr_error["field"] = "{parent_attr}.{child_attr}".format(
-                        parent_attr=attr, child_attr=attr_error["field"])
-                errors.extend(attr_errors)
         return errors
 
     @property

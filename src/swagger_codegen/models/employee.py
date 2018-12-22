@@ -81,30 +81,19 @@ class Employee(Model):
                 "message": "Invalid value for `contact`, must not be `None`"  # noqa: E501
             })
         # TODO Object(Modelのサブクラス) のチェック処理を追加
-
-        for attr, attr_type in self.swagger_types.items():
-            # List[xxx] の場合
-            if type(List) == type(attr_type):
-                attr_values = getattr(self, attr)
-                if not attr_values:
-                    continue
-                for i, attr_value in enumerate(attr_values):  # pylint: disable=E1133
-                    attr_errors = attr_value.validate()
-                    for attr_error in attr_errors:
-                        attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
-                            parent_attr=attr, index=i, child_attr=attr_error["field"])
-                    errors.extend(attr_errors)
-
-            # Model のサブクラスの場合
-            elif issubclass(attr_type, Model):
-                attr_value = getattr(self, attr)
-                if not attr_value:
-                    continue
-                attr_errors = attr_value.validate()
+        if self._contact is not None and not isinstance(self._contact, Model):
+            errors.append({
+                "code": "type_object",
+                "field": "contact",
+                "message": "Invalid value for `contact`, must not be type `object`"  # noqa: E501
+            })
+        if self._contact is not None and isinstance(self._contact, Model):
+                attr_errors = self._contact.validate()
                 for attr_error in attr_errors:
                     attr_error["field"] = "{parent_attr}.{child_attr}".format(
-                        parent_attr=attr, child_attr=attr_error["field"])
+                        parent_attr="contact", child_attr=attr_error["field"])
                 errors.extend(attr_errors)
+
         return errors
 
     @property

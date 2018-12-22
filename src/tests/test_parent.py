@@ -338,9 +338,23 @@ class TestClassName(unittest.TestCase):
             },
             expected=[
                 {
-                    "code": "required",
-                    "field": "children[0]grandchildren",
-                    "message": "Invalid value for `grandchildren`, must not be `None`"
+                    "code": "type_list",
+                    "field": "children",
+                    "message": "Invalid value for `children`, must not be type `list`"
+                }
+            ]),
+        param(
+            "strig_in_list",
+            input={
+                "parent_field1": "parent_value1",
+                "parent_field2": "parent_value2",
+                "children": "aha",
+            },
+            expected=[
+                {
+                    "code": "type_list",
+                    "field": "children",
+                    "message": "Invalid value for `children`, must not be type `list`"
                 }
             ]),
     ])
@@ -348,7 +362,7 @@ class TestClassName(unittest.TestCase):
         parent = Parent.from_dict(input)
         errors = parent.validate()
 
-        self.assertEqual(len(errors), len(expected))
+        self.assertEqual(len(errors), len(expected), msg=errors)
         for index, expected_error in enumerate(expected):
             self.assertEqual(errors[index].get("code"), expected_error["code"])
             self.assertEqual(errors[index].get("field"), expected_error["field"])

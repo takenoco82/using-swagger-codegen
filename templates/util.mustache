@@ -127,8 +127,11 @@ def _deserialize_list(data, boxed_type):
     :return: deserialized list.
     :rtype: list
     """
-    return [_deserialize(sub_data, boxed_type)
-            for sub_data in data]
+    if type(data) == list:
+        return [_deserialize(sub_data, boxed_type)
+                for sub_data in data]
+    # list じゃなくても validate でチェックするので設定する
+    return data
 
 
 def _deserialize_dict(data, boxed_type):

@@ -185,11 +185,36 @@ class {{classname}}(Model):
 {{/isPrimitiveType}}
 {{^isPrimitiveType}}
         # TODO List[object] のチェック処理を追加
+        if self._{{name}} is not None and type(self._{{name}}) != list:
+            errors.append({
+                "code": "type_list",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must not be type `list`"  # noqa: E501
+            })
+        if self._{{name}} is not None and type(self._{{name}}) == list:
+            for i, attr_value in enumerate(self._{{name}}):  # pylint: disable=E1133
+                attr_errors = attr_value.validate()
+                for attr_error in attr_errors:
+                    attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
+                        parent_attr="{{name}}", index=i, child_attr=attr_error["field"])
+                errors.extend(attr_errors)
 {{/isPrimitiveType}}
 {{/isContainer}}
 {{^isContainer}}
 {{^isPrimitiveType}}
         # TODO Object(Modelのサブクラス) のチェック処理を追加
+        if self._{{name}} is not None and not isinstance(self._{{name}}, Model):
+            errors.append({
+                "code": "type_object",
+                "field": "{{name}}",
+                "message": "Invalid value for `{{name}}`, must not be type `object`"  # noqa: E501
+            })
+        if self._{{name}} is not None and isinstance(self._{{name}}, Model):
+                attr_errors = self._{{name}}.validate()
+                for attr_error in attr_errors:
+                    attr_error["field"] = "{parent_attr}.{child_attr}".format(
+                        parent_attr="{{name}}", child_attr=attr_error["field"])
+                errors.extend(attr_errors)
 {{/isPrimitiveType}}
 {{/isContainer}}
 {{#hasValidation}}
@@ -269,29 +294,6 @@ class {{classname}}(Model):
 {{/isEnum}}
         {{/vars}}
 
-        for attr, attr_type in self.swagger_types.items():
-            # List[xxx] の場合
-            if type(List) == type(attr_type):
-                attr_values = getattr(self, attr)
-                if not attr_values:
-                    continue
-                for i, attr_value in enumerate(attr_values):  # pylint: disable=E1133
-                    attr_errors = attr_value.validate()
-                    for attr_error in attr_errors:
-                        attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
-                            parent_attr=attr, index=i, child_attr=attr_error["field"])
-                    errors.extend(attr_errors)
-
-            # Model のサブクラスの場合
-            elif issubclass(attr_type, Model):
-                attr_value = getattr(self, attr)
-                if not attr_value:
-                    continue
-                attr_errors = attr_value.validate()
-                for attr_error in attr_errors:
-                    attr_error["field"] = "{parent_attr}.{child_attr}".format(
-                        parent_attr=attr, child_attr=attr_error["field"])
-                errors.extend(attr_errors)
         return errors{{#vars}}{{#-first}}
 
 {{/-first}}

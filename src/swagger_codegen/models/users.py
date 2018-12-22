@@ -47,30 +47,20 @@ class Users(Model):
     def validate(self):
         errors = []
         # TODO List[object] のチェック処理を追加
-
-        for attr, attr_type in self.swagger_types.items():
-            # List[xxx] の場合
-            if type(List) == type(attr_type):
-                attr_values = getattr(self, attr)
-                if not attr_values:
-                    continue
-                for i, attr_value in enumerate(attr_values):  # pylint: disable=E1133
-                    attr_errors = attr_value.validate()
-                    for attr_error in attr_errors:
-                        attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
-                            parent_attr=attr, index=i, child_attr=attr_error["field"])
-                    errors.extend(attr_errors)
-
-            # Model のサブクラスの場合
-            elif issubclass(attr_type, Model):
-                attr_value = getattr(self, attr)
-                if not attr_value:
-                    continue
+        if self._users is not None and type(self._users) != list:
+            errors.append({
+                "code": "type_list",
+                "field": "users",
+                "message": "Invalid value for `users`, must not be type `list`"  # noqa: E501
+            })
+        if self._users is not None and type(self._users) == list:
+            for i, attr_value in enumerate(self._users):  # pylint: disable=E1133
                 attr_errors = attr_value.validate()
                 for attr_error in attr_errors:
-                    attr_error["field"] = "{parent_attr}.{child_attr}".format(
-                        parent_attr=attr, child_attr=attr_error["field"])
+                    attr_error["field"] = "{parent_attr}[{index}]{child_attr}".format(
+                        parent_attr="users", index=i, child_attr=attr_error["field"])
                 errors.extend(attr_errors)
+
         return errors
 
     @property
