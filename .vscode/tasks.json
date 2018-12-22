@@ -44,7 +44,7 @@
             }
         },
         {
-            "label": "unittest: Current File",
+            "label": "unittest",
             "type": "shell",
             "command": "python -m unittest -v -b ${relativeFile}",
             "group": {
@@ -75,7 +75,7 @@
             }
         },
         {
-            "label": "nosetests: Current File",
+            "label": "nosetests",
             "type": "shell",
             "command": "nosetests -v --nologcapture ${relativeFile}",
             "group": {
