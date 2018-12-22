@@ -80,6 +80,7 @@ class Employee(Model):
                 "field": "contact",
                 "message": "Invalid value for `contact`, must not be `None`"  # noqa: E501
             })
+        # TODO Object(Modelのサブクラス) のチェック処理を追加
 
         for attr, attr_type in self.swagger_types.items():
             # List[xxx] の場合

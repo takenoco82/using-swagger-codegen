@@ -182,6 +182,11 @@ class {{classname}}(Model):
 {{#isContainer}}
         # TODO List[] のチェック処理を追加
 {{/isContainer}}
+{{^isContainer}}
+{{^isPrimitiveType}}
+        # TODO Object(Modelのサブクラス) のチェック処理を追加
+{{/isPrimitiveType}}
+{{/isContainer}}
 {{#hasValidation}}
 {{#maxLength}}
         if self._{{name}} is not None and len(self._{{name}}) > {{maxLength}}:
