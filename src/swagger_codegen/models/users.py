@@ -46,6 +46,7 @@ class Users(Model):
 
     def validate(self):
         errors = []
+        # TODO List[] のチェック処理を追加
 
         for attr, attr_type in self.swagger_types.items():
             # List[xxx] の場合

@@ -179,6 +179,9 @@ class {{classname}}(Model):
                 "message": "Invalid value for `{{name}}`, type must be `datetime`"  # noqa: E501
             })
 {{/isDateTime}}
+{{#isContainer}}
+        # TODO List[] のチェック処理を追加
+{{/isContainer}}
 {{#hasValidation}}
 {{#maxLength}}
         if self._{{name}} is not None and len(self._{{name}}) > {{maxLength}}:

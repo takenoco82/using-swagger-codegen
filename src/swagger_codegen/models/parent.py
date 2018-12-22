@@ -80,6 +80,7 @@ class Parent(Model):
                 "field": "children",
                 "message": "Invalid value for `children`, must not be `None`"  # noqa: E501
             })
+        # TODO List[] のチェック処理を追加
 
         for attr, attr_type in self.swagger_types.items():
             # List[xxx] の場合
